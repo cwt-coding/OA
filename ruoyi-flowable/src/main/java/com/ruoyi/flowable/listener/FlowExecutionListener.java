@@ -17,9 +17,6 @@ import org.springframework.stereotype.Component;
  * 路由开始，结束
  * 中间事件开始，结束
  * 触发开始事件，触发结束事件
- *
- * @author Tony
- * @date 2022/12/16
  */
 @Slf4j
 @Component

@@ -6,12 +6,9 @@ import java.util.List;
 
 /**
  * 流程任务关联单Mapper接口
- * 
- * @author Tony
- * @date 2021-04-03
  */
-public interface SysTaskFormMapper 
-{
+public interface SysTaskFormMapper {
+
     /**
      * 查询流程任务关联单
      * 

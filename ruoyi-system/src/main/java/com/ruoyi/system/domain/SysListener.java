@@ -7,12 +7,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 流程监听对象 sys_listener
- * 
- * @author Tony
- * @date 2022-12-25
  */
-public class SysListener extends BaseEntity
-{
+public class SysListener extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 表单主键 */

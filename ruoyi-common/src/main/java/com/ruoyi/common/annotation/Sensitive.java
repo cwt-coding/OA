@@ -11,14 +11,11 @@ import com.ruoyi.common.enums.DesensitizedType;
 
 /**
  * 数据脱敏注解
- *
- * @author ruoyi
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @JacksonAnnotationsInside
 @JsonSerialize(using = SensitiveJsonSerializer.class)
-public @interface Sensitive
-{
+public @interface Sensitive {
     DesensitizedType desensitizedType();
 }

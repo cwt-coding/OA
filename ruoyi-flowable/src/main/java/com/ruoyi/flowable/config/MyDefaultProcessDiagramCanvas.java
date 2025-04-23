@@ -8,10 +8,6 @@
 //import java.awt.geom.Line2D;
 //import java.awt.geom.RoundRectangle2D;
 //
-///**
-// * @author Tony
-// * @date 2021-04-03
-// */
 //public class MyDefaultProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
 //    //设置高亮线的颜色  这里我设置成绿色
 //    protected static Color HIGHLIGHT_SEQUENCEFLOW_COLOR = Color.GREEN;

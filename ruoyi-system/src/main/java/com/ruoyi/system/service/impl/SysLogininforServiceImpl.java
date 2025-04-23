@@ -9,12 +9,9 @@ import com.ruoyi.system.service.ISysLogininforService;
 
 /**
  * 系统访问日志情况信息 服务层处理
- * 
- * @author ruoyi
  */
 @Service
-public class SysLogininforServiceImpl implements ISysLogininforService
-{
+public class SysLogininforServiceImpl implements ISysLogininforService {
 
     @Autowired
     private SysLogininforMapper logininforMapper;
@@ -37,8 +34,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService
      * @return 登录记录集合
      */
     @Override
-    public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor)
-    {
+    public List<SysLogininfor> selectLogininforList(SysLogininfor logininfor) {
         return logininforMapper.selectLogininforList(logininfor);
     }
 

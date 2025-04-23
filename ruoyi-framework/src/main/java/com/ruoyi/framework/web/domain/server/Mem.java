@@ -4,11 +4,9 @@ import com.ruoyi.common.utils.Arith;
 
 /**
  * 內存相关信息
- * 
- * @author ruoyi
  */
-public class Mem
-{
+public class Mem {
+
     /**
      * 内存总量
      */

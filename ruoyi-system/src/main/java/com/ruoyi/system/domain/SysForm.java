@@ -7,12 +7,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 流程表单对象 sys_task_form
- * 
- * @author Tony
- * @date 2021-03-30
  */
-public class SysForm extends BaseEntity
-{
+public class SysForm extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 表单主键 */

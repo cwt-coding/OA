@@ -5,11 +5,8 @@ import java.io.PrintWriter;
 
 /**
  * 文件上传异常类
- * 
- * @author ruoyi
  */
-public class FileUploadException extends Exception
-{
+public class FileUploadException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
@@ -25,29 +22,24 @@ public class FileUploadException extends Exception
         this(msg, null);
     }
 
-    public FileUploadException(String msg, Throwable cause)
-    {
+    public FileUploadException(String msg, Throwable cause) {
         super(msg);
         this.cause = cause;
     }
 
     @Override
-    public void printStackTrace(PrintStream stream)
-    {
+    public void printStackTrace(PrintStream stream) {
         super.printStackTrace(stream);
-        if (cause != null)
-        {
+        if (cause != null) {
             stream.println("Caused by:");
             cause.printStackTrace(stream);
         }
     }
 
     @Override
-    public void printStackTrace(PrintWriter writer)
-    {
+    public void printStackTrace(PrintWriter writer) {
         super.printStackTrace(writer);
-        if (cause != null)
-        {
+        if (cause != null) {
             writer.println("Caused by:");
             cause.printStackTrace(writer);
         }

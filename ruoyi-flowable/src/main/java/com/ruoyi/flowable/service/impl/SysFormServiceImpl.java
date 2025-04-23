@@ -10,13 +10,10 @@ import com.ruoyi.flowable.service.ISysFormService;
 
 /**
  * 流程表单Service业务层处理
- * 
- * @author Tony
- * @date 2021-04-03
  */
 @Service
-public class SysFormServiceImpl implements ISysFormService 
-{
+public class SysFormServiceImpl implements ISysFormService {
+
     @Autowired
     private SysFormMapper sysFormMapper;
 
@@ -51,8 +48,7 @@ public class SysFormServiceImpl implements ISysFormService
      * @return 结果
      */
     @Override
-    public int insertSysForm(SysForm sysForm)
-    {
+    public int insertSysForm(SysForm sysForm) {
         sysForm.setCreateTime(DateUtils.getNowDate());
         return sysFormMapper.insertSysForm(sysForm);
     }
@@ -64,8 +60,7 @@ public class SysFormServiceImpl implements ISysFormService
      * @return 结果
      */
     @Override
-    public int updateSysForm(SysForm sysForm)
-    {
+    public int updateSysForm(SysForm sysForm) {
         sysForm.setUpdateTime(DateUtils.getNowDate());
         return sysFormMapper.updateSysForm(sysForm);
     }

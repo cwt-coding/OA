@@ -5,12 +5,9 @@ import com.ruoyi.system.domain.SysListener;
 
 /**
  * 流程监听Service接口
- * 
- * @author Tony
- * @date 2022-12-25
  */
-public interface ISysListenerService 
-{
+public interface ISysListenerService {
+
     /**
      * 查询流程监听
      * 

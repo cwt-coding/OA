@@ -6,10 +6,6 @@ import java.util.List;
 
 /**
  * 流程定义查询
- *
- * @author Tony
- * @email
- * @date 2022/1/29 5:44 下午
  **/
 public interface FlowDeployMapper {
 

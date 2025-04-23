@@ -11,10 +11,6 @@ import org.flowable.task.api.history.HistoricTaskInstance;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * @author Tony
- * @date 2021-04-03 23:57
- */
 @Slf4j
 public class FlowableUtils {
 

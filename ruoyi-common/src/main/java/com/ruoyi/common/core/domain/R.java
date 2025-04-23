@@ -5,11 +5,9 @@ import com.ruoyi.common.constant.HttpStatus;
 
 /**
  * 响应信息主体
- *
- * @author ruoyi
  */
-public class R<T> implements Serializable
-{
+public class R<T> implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /** 成功 */
@@ -64,8 +62,7 @@ public class R<T> implements Serializable
         return restResult(null, code, msg);
     }
 
-    private static <T> R<T> restResult(T data, int code, String msg)
-    {
+    private static <T> R<T> restResult(T data, int code, String msg) {
         R<T> apiResult = new R<>();
         apiResult.setCode(code);
         apiResult.setData(data);

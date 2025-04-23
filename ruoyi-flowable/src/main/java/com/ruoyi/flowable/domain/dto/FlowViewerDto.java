@@ -4,10 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * @author Tony
- * @date 2021/4/21 20:55
- */
 @Data
 public class FlowViewerDto implements Serializable {
 

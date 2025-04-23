@@ -5,12 +5,9 @@ import com.ruoyi.system.domain.SysExpression;
 
 /**
  * 流程达式Mapper接口
- * 
- * @author ruoyi
- * @date 2022-12-12
  */
-public interface SysExpressionMapper 
-{
+public interface SysExpressionMapper {
+
     /**
      * 查询流程达式
      * 

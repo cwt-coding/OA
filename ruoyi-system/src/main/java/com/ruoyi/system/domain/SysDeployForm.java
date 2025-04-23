@@ -7,12 +7,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 流程实例关联表单对象 sys_instance_form
- * 
- * @author Tony
- * @date 2021-03-30
  */
-public class SysDeployForm extends BaseEntity
-{
+public class SysDeployForm extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 主键 */

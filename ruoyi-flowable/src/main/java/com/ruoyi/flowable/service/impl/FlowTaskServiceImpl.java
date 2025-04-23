@@ -1,6 +1,5 @@
 package com.ruoyi.flowable.service.impl;
 
-
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.TypeReference;
@@ -13,6 +12,7 @@ import com.ruoyi.flowable.common.enums.FlowComment;
 import com.ruoyi.common.exception.CustomException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.flowable.domain.dto.*;
+import com.ruoyi.flowable.domain.vo.FlowQueryLiteVo;
 import com.ruoyi.flowable.domain.vo.FlowQueryVo;
 import com.ruoyi.flowable.domain.vo.FlowTaskVo;
 import com.ruoyi.flowable.factory.FlowServiceFactory;
@@ -50,6 +50,9 @@ import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.flowable.engine.impl.cmd.AddMultiInstanceExecutionCmd;
 import org.flowable.engine.impl.cmd.DeleteMultiInstanceExecutionCmd;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,10 +66,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/**
- * @author Tony
- * @date 2021-04-03
- **/
 @Service
 @Slf4j
 public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTaskService {
@@ -677,7 +676,6 @@ public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTask
         return AjaxResult.success(page);
     }
 
-
     /**
      * 已办任务列表
      *
@@ -1212,6 +1210,120 @@ public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTask
             }
         });
         return AjaxResult.success(flowTask);
+    }
+
+    /**
+     * 获取待办流程数量
+     *
+     * @param queryVo 请求参数
+     * @return
+     */
+    @Override
+    public AjaxResult todoProcessCount(FlowQueryVo queryVo) {
+        // 调用原有的todoList方法获取代办任务列表
+        AjaxResult result = todoList(queryVo);
+        // 从结果中获取列表数据
+        Object data = result.get("data");
+        if (data instanceof com.baomidou.mybatisplus.extension.plugins.pagination.Page) {
+            com.baomidou.mybatisplus.extension.plugins.pagination.Page<?> page = (com.baomidou.mybatisplus.extension.plugins.pagination.Page<?>) data;
+            // 返回列表的总记录数
+            return AjaxResult.success(page.getTotal());
+        }
+        return AjaxResult.error("获取代办流程数量失败");
+    }
+
+    @Override
+    public AjaxResult todoListLite(FlowQueryLiteVo queryLiteVo) {
+        List<FlowTaskDto> todoTaskList = new ArrayList<>();
+        Long userId = getCurrentUserId();
+        if (userId == null) {
+            log.info("未获取到当前用户 ID，返回空列表");
+            return AjaxResult.success(new ArrayList<>());
+        }
+        log.info("成功获取当前用户 ID: {}", userId);
+
+        HistoricTaskInstanceQuery taskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
+                .includeProcessVariables()
+                .unfinished()
+                .taskAssignee(userId.toString())
+                .orderByHistoricTaskInstanceStartTime()
+                .desc();
+
+        // 验证并转换 pageSize 和 pageNum
+        int pageSize = 4; // 默认值
+        int pageNum = 1;   // 默认值
+        if (queryLiteVo.getPageSize() != null) {
+            try {
+                pageSize = Integer.parseInt(queryLiteVo.getPageSize().toString());
+                if (pageSize <= 0) {
+                    pageSize = 4; // 如果小于等于 0，使用默认值
+                    log.info("pageSize 小于等于 0，使用默认值: {}", pageSize);
+                } else {
+                    log.info("使用传入的 pageSize: {}", pageSize);
+                }
+            } catch (NumberFormatException e) {
+                log.error("Invalid pageSize: {}", queryLiteVo.getPageSize(), e);
+            }
+        }
+        if (queryLiteVo.getPageNum() != null) {
+            try {
+                pageNum = Integer.parseInt(queryLiteVo.getPageNum().toString());
+                if (pageNum <= 0) {
+                    pageNum = 1; // 如果小于等于 0，使用默认值
+                    log.info("pageNum 小于等于 0，使用默认值: {}", pageNum);
+                } else {
+                    log.info("使用传入的 pageNum: {}", pageNum);
+                }
+            } catch (NumberFormatException e) {
+                log.error("Invalid pageNum: {}", queryLiteVo.getPageNum(), e);
+            }
+        }
+
+        List<HistoricTaskInstance> historicTaskInstanceList = taskInstanceQuery.listPage((pageNum - 1) * pageSize, pageSize);
+        if (historicTaskInstanceList.isEmpty()) {
+            log.info("未查询到历史任务实例，pageNum: {}, pageSize: {}", pageNum, pageSize);
+        } else {
+            log.info("查询到 {} 条历史任务实例，pageNum: {}, pageSize: {}", historicTaskInstanceList.size(), pageNum, pageSize);
+        }
+
+        for (HistoricTaskInstance histTask : historicTaskInstanceList) {
+            FlowTaskDto flowTask = new FlowTaskDto();
+            // 流程名称
+            ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+                    .processDefinitionId(histTask.getProcessDefinitionId())
+                    .singleResult();
+            if (pd != null) {
+                flowTask.setProcDefName(pd.getName());
+                log.info("为任务 ID {} 设置流程名称: {}", histTask.getId(), pd.getName());
+            } else {
+                flowTask.setProcDefName("未知流程"); // 设置默认值
+                log.info("未找到任务 ID {} 的流程定义，设置默认流程名称: 未知流程", histTask.getId());
+            }
+
+            // 接收时间
+            flowTask.setCreateTime(histTask.getCreateTime());
+            log.info("为任务 ID {} 设置接收时间: {}", histTask.getId(), histTask.getCreateTime());
+
+            todoTaskList.add(flowTask);
+        }
+
+        return AjaxResult.success(todoTaskList);
+    }
+
+    private Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                // 根据用户名从数据库中查询用户 ID
+                SysUser user = sysUserService.selectUserByUserName(username);
+                if (user != null) {
+                    return user.getUserId();
+                }
+            }
+        }
+        return null;
     }
 
     /**

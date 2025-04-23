@@ -6,11 +6,9 @@ import com.ruoyi.common.utils.DateUtils;
 
 /**
  * JVM相关信息
- * 
- * @author ruoyi
  */
-public class Jvm
-{
+public class Jvm {
+
     /**
      * 当前JVM占用的内存总数(M)
      */
@@ -107,16 +105,14 @@ public class Jvm
     /**
      * JDK启动时间
      */
-    public String getStartTime()
-    {
+    public String getStartTime() {
         return DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, DateUtils.getServerStartDate());
     }
 
     /**
      * JDK运行时间
      */
-    public String getRunTime()
-    {
+    public String getRunTime() {
         return DateUtils.timeDistance(DateUtils.getNowDate(), DateUtils.getServerStartDate());
     }
 

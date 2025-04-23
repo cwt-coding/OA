@@ -6,11 +6,9 @@ import com.ruoyi.common.core.domain.entity.SysDictData;
 
 /**
  * 字典表 数据层
- * 
- * @author ruoyi
  */
-public interface SysDictDataMapper
-{
+public interface SysDictDataMapper {
+
     /**
      * 根据条件分页查询字典数据
      * 

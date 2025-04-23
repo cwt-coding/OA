@@ -19,10 +19,6 @@ import java.io.IOException;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
-/**
- * @author Tony
- * @date 2021/4/4 23:58
- */
 public class CustomProcessDiagramCanvas extends DefaultProcessDiagramCanvas {
     //定义走过流程连线颜色为绿色
     protected static Color HIGHLIGHT_SequenceFlow_COLOR = Color.GREEN;

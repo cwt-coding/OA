@@ -2,14 +2,13 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysNotice;
+import com.ruoyi.system.domain.SysNoticeLite;
 
 /**
  * 公告 服务层
- * 
- * @author ruoyi
  */
-public interface ISysNoticeService
-{
+public interface ISysNoticeService {
+
     /**
      * 查询公告信息
      * 
@@ -57,4 +56,17 @@ public interface ISysNoticeService
      * @return 结果
      */
     public int deleteNoticeByIds(Long[] noticeIds);
+
+    /**
+     * 查询通知（noticeType = '1'）的精简信息列表
+     * @return 通知精简信息列表
+     */
+    List<SysNoticeLite> selectAnnouncementLiteList();
+
+    /**
+     * 查询新闻中心（noticeType = '2'）的精简信息列表
+     * @return 新闻中心（公告）精简信息列表
+     */
+    List<SysNoticeLite> selectNewsCenterLiteList();
+
 }

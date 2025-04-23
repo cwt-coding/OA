@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 扩展流程配置
- * @author Tony
- * @date 2022-12-26 10:24
  */
 @Configuration
 public class FlowableConfig implements EngineConfigurationConfigurer<SpringProcessEngineConfiguration> {

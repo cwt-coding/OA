@@ -8,9 +8,6 @@ import javax.annotation.Resource;
 
 /**
  * 扩展表达式
- *
- * @author Tony
- * @date 2023-03-04 12:10
  */
 @Component
 @Slf4j

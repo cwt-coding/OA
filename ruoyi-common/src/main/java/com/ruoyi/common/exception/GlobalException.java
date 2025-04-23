@@ -2,11 +2,8 @@ package com.ruoyi.common.exception;
 
 /**
  * 全局异常
- * 
- * @author ruoyi
  */
-public class GlobalException extends RuntimeException
-{
+public class GlobalException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -24,8 +21,7 @@ public class GlobalException extends RuntimeException
     /**
      * 空构造方法，避免反序列化问题
      */
-    public GlobalException()
-    {
+    public GlobalException() {
     }
 
     public GlobalException(String message)
@@ -38,8 +34,7 @@ public class GlobalException extends RuntimeException
         return detailMessage;
     }
 
-    public GlobalException setDetailMessage(String detailMessage)
-    {
+    public GlobalException setDetailMessage(String detailMessage) {
         this.detailMessage = detailMessage;
         return this;
     }
@@ -50,8 +45,7 @@ public class GlobalException extends RuntimeException
         return message;
     }
 
-    public GlobalException setMessage(String message)
-    {
+    public GlobalException setMessage(String message) {
         this.message = message;
         return this;
     }

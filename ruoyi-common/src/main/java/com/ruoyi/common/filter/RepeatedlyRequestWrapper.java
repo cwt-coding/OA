@@ -14,15 +14,12 @@ import com.ruoyi.common.constant.Constants;
 
 /**
  * 构建可重复读取inputStream的request
- * 
- * @author ruoyi
  */
-public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper
-{
+public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper {
+
     private final byte[] body;
 
-    public RepeatedlyRequestWrapper(HttpServletRequest request, ServletResponse response) throws IOException
-    {
+    public RepeatedlyRequestWrapper(HttpServletRequest request, ServletResponse response) throws IOException {
         super(request);
         request.setCharacterEncoding(Constants.UTF8);
         response.setCharacterEncoding(Constants.UTF8);
@@ -31,26 +28,22 @@ public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper
     }
 
     @Override
-    public BufferedReader getReader() throws IOException
-    {
+    public BufferedReader getReader() throws IOException {
         return new BufferedReader(new InputStreamReader(getInputStream()));
     }
 
     @Override
-    public ServletInputStream getInputStream() throws IOException
-    {
+    public ServletInputStream getInputStream() throws IOException {
         final ByteArrayInputStream bais = new ByteArrayInputStream(body);
         return new ServletInputStream()
         {
             @Override
-            public int read() throws IOException
-            {
+            public int read() throws IOException {
                 return bais.read();
             }
 
             @Override
-            public int available() throws IOException
-            {
+            public int available() throws IOException {
                 return body.length;
             }
 

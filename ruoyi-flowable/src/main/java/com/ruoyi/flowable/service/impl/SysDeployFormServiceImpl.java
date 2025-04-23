@@ -12,13 +12,10 @@ import com.ruoyi.flowable.service.ISysDeployFormService;
 
 /**
  * 流程实例关联表单Service业务层处理
- * 
- * @author Tony
- * @date 2021-04-03
  */
 @Service
-public class SysDeployFormServiceImpl implements ISysDeployFormService 
-{
+public class SysDeployFormServiceImpl implements ISysDeployFormService {
+
     @Autowired
     private SysDeployFormMapper sysDeployFormMapper;
 
@@ -41,8 +38,7 @@ public class SysDeployFormServiceImpl implements ISysDeployFormService
      * @return 流程实例关联表单
      */
     @Override
-    public List<SysDeployForm> selectSysDeployFormList(SysDeployForm sysDeployForm)
-    {
+    public List<SysDeployForm> selectSysDeployFormList(SysDeployForm sysDeployForm) {
         return sysDeployFormMapper.selectSysDeployFormList(sysDeployForm);
     }
 
@@ -53,12 +49,11 @@ public class SysDeployFormServiceImpl implements ISysDeployFormService
      * @return 结果
      */
     @Override
-    public int insertSysDeployForm(SysDeployForm sysDeployForm)
-    {
+    public int insertSysDeployForm(SysDeployForm sysDeployForm) {
         SysForm sysForm = sysDeployFormMapper.selectSysDeployFormByDeployId(sysDeployForm.getDeployId());
         if (Objects.isNull(sysForm)) {
             return sysDeployFormMapper.insertSysDeployForm(sysDeployForm);
-        }else {
+        } else {
             return 1;
         }
     }
@@ -70,8 +65,7 @@ public class SysDeployFormServiceImpl implements ISysDeployFormService
      * @return 结果
      */
     @Override
-    public int updateSysDeployForm(SysDeployForm sysDeployForm)
-    {
+    public int updateSysDeployForm(SysDeployForm sysDeployForm) {
         return sysDeployFormMapper.updateSysDeployForm(sysDeployForm);
     }
 

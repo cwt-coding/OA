@@ -2,14 +2,13 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysNotice;
+import com.ruoyi.system.domain.SysNoticeLite;
 
 /**
  * 通知公告表 数据层
- * 
- * @author ruoyi
  */
-public interface SysNoticeMapper
-{
+public interface SysNoticeMapper {
+
     /**
      * 查询公告信息
      * 
@@ -57,4 +56,11 @@ public interface SysNoticeMapper
      * @return 结果
      */
     public int deleteNoticeByIds(Long[] noticeIds);
+
+    /**
+     * 查询通知公告的精简信息列表
+     * @param notice 通知公告信息，可用于传递查询条件
+     * @return 通知公告精简信息列表
+     */
+    List<SysNoticeLite> selectNoticeLiteList(SysNotice notice);
 }

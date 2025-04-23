@@ -4,11 +4,9 @@ import com.ruoyi.common.utils.Arith;
 
 /**
  * CPU相关信息
- * 
- * @author ruoyi
  */
-public class Cpu
-{
+public class Cpu {
+
     /**
      * 核心数
      */

@@ -9,12 +9,10 @@ import com.ruoyi.quartz.service.ISysJobLogService;
 
 /**
  * 定时任务调度日志信息 服务层
- * 
- * @author ruoyi
  */
 @Service
-public class SysJobLogServiceImpl implements ISysJobLogService
-{
+public class SysJobLogServiceImpl implements ISysJobLogService {
+
     @Autowired
     private SysJobLogMapper jobLogMapper;
 
@@ -25,8 +23,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
      * @return 调度任务日志集合
      */
     @Override
-    public List<SysJobLog> selectJobLogList(SysJobLog jobLog)
-    {
+    public List<SysJobLog> selectJobLogList(SysJobLog jobLog) {
         return jobLogMapper.selectJobLogList(jobLog);
     }
 
@@ -37,8 +34,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
      * @return 调度任务日志对象信息
      */
     @Override
-    public SysJobLog selectJobLogById(Long jobLogId)
-    {
+    public SysJobLog selectJobLogById(Long jobLogId) {
         return jobLogMapper.selectJobLogById(jobLogId);
     }
 
@@ -48,8 +44,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
      * @param jobLog 调度日志信息
      */
     @Override
-    public void addJobLog(SysJobLog jobLog)
-    {
+    public void addJobLog(SysJobLog jobLog) {
         jobLogMapper.insertJobLog(jobLog);
     }
 
@@ -60,8 +55,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
      * @return 结果
      */
     @Override
-    public int deleteJobLogByIds(Long[] logIds)
-    {
+    public int deleteJobLogByIds(Long[] logIds) {
         return jobLogMapper.deleteJobLogByIds(logIds);
     }
 
@@ -71,8 +65,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
      * @param jobId 调度日志ID
      */
     @Override
-    public int deleteJobLogById(Long jobId)
-    {
+    public int deleteJobLogById(Long jobId) {
         return jobLogMapper.deleteJobLogById(jobId);
     }
 
@@ -80,8 +73,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
      * 清空任务日志
      */
     @Override
-    public void cleanJobLog()
-    {
+    public void cleanJobLog() {
         jobLogMapper.cleanJobLog();
     }
 }

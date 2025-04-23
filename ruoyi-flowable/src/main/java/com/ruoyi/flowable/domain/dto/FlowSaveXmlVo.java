@@ -4,10 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * @author Tony
- * @date 2021/3/28 19:48
- */
 @Data
 public class FlowSaveXmlVo implements Serializable {
 

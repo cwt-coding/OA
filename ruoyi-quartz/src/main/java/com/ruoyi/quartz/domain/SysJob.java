@@ -15,11 +15,9 @@ import com.ruoyi.quartz.util.CronUtils;
 
 /**
  * 定时任务调度表 sys_job
- * 
- * @author ruoyi
  */
-public class SysJob extends BaseEntity
-{
+public class SysJob extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 任务ID */
@@ -111,10 +109,8 @@ public class SysJob extends BaseEntity
     }
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Date getNextValidTime()
-    {
-        if (StringUtils.isNotEmpty(cronExpression))
-        {
+    public Date getNextValidTime() {
+        if (StringUtils.isNotEmpty(cronExpression)) {
             return CronUtils.getNextExecution(cronExpression);
         }
         return null;

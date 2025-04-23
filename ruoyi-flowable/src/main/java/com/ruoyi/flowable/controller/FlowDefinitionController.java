@@ -36,12 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
  * 工作流程定义
- * </p>
- *
- * @author Tony
- * @date 2021-04-03
  */
 @Slf4j
 @Api(tags = "流程定义")

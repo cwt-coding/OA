@@ -5,11 +5,9 @@ import com.ruoyi.system.domain.SysForm;
 
 /**
  * 表单
- * @author Tony
- * @date 2021-04-03
  */
-public interface ISysFormService 
-{
+public interface ISysFormService {
+
     /**
      * 查询流程表单
      * 

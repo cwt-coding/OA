@@ -8,11 +8,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 操作日志记录表 oper_log
- * 
- * @author ruoyi
  */
-public class SysOperLog extends BaseEntity
-{
+public class SysOperLog extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 日志主键 */

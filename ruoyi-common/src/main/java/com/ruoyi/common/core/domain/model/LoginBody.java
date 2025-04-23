@@ -2,11 +2,8 @@ package com.ruoyi.common.core.domain.model;
 
 /**
  * 用户登录对象
- * 
- * @author ruoyi
  */
-public class LoginBody
-{
+public class LoginBody {
     /**
      * 用户名
      */

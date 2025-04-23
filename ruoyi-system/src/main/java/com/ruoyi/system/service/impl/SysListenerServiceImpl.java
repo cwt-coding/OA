@@ -10,13 +10,10 @@ import com.ruoyi.system.service.ISysListenerService;
 
 /**
  * 流程监听Service业务层处理
- * 
- * @author Tony
- * @date 2022-12-25
  */
 @Service
-public class SysListenerServiceImpl implements ISysListenerService 
-{
+public class SysListenerServiceImpl implements ISysListenerService {
+
     @Autowired
     private SysListenerMapper sysListenerMapper;
 
@@ -39,8 +36,7 @@ public class SysListenerServiceImpl implements ISysListenerService
      * @return 流程监听
      */
     @Override
-    public List<SysListener> selectSysListenerList(SysListener sysListener)
-    {
+    public List<SysListener> selectSysListenerList(SysListener sysListener) {
         return sysListenerMapper.selectSysListenerList(sysListener);
     }
 
@@ -51,8 +47,7 @@ public class SysListenerServiceImpl implements ISysListenerService
      * @return 结果
      */
     @Override
-    public int insertSysListener(SysListener sysListener)
-    {
+    public int insertSysListener(SysListener sysListener) {
         sysListener.setCreateTime(DateUtils.getNowDate());
         return sysListenerMapper.insertSysListener(sysListener);
     }
@@ -64,8 +59,7 @@ public class SysListenerServiceImpl implements ISysListenerService
      * @return 结果
      */
     @Override
-    public int updateSysListener(SysListener sysListener)
-    {
+    public int updateSysListener(SysListener sysListener) {
         sysListener.setUpdateTime(DateUtils.getNowDate());
         return sysListenerMapper.updateSysListener(sysListener);
     }

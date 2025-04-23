@@ -10,13 +10,10 @@ import com.ruoyi.system.service.ISysExpressionService;
 
 /**
  * 流程达式Service业务层处理
- * 
- * @author ruoyi
- * @date 2022-12-12
  */
 @Service
-public class SysExpressionServiceImpl implements ISysExpressionService 
-{
+public class SysExpressionServiceImpl implements ISysExpressionService {
+
     @Autowired
     private SysExpressionMapper sysExpressionMapper;
 
@@ -39,8 +36,7 @@ public class SysExpressionServiceImpl implements ISysExpressionService
      * @return 流程达式
      */
     @Override
-    public List<SysExpression> selectSysExpressionList(SysExpression sysExpression)
-    {
+    public List<SysExpression> selectSysExpressionList(SysExpression sysExpression) {
         return sysExpressionMapper.selectSysExpressionList(sysExpression);
     }
 
@@ -51,8 +47,7 @@ public class SysExpressionServiceImpl implements ISysExpressionService
      * @return 结果
      */
     @Override
-    public int insertSysExpression(SysExpression sysExpression)
-    {
+    public int insertSysExpression(SysExpression sysExpression) {
         sysExpression.setCreateTime(DateUtils.getNowDate());
         return sysExpressionMapper.insertSysExpression(sysExpression);
     }
@@ -64,8 +59,7 @@ public class SysExpressionServiceImpl implements ISysExpressionService
      * @return 结果
      */
     @Override
-    public int updateSysExpression(SysExpression sysExpression)
-    {
+    public int updateSysExpression(SysExpression sysExpression) {
         sysExpression.setUpdateTime(DateUtils.getNowDate());
         return sysExpressionMapper.updateSysExpression(sysExpression);
     }

@@ -7,12 +7,9 @@ import java.util.List;
 
 /**
  * 流程实例关联表单Mapper接口
- * 
- * @author Tony
- * @date 2021-03-30
  */
-public interface SysDeployFormMapper 
-{
+public interface SysDeployFormMapper {
+
     /**
      * 查询流程实例关联表单
      * 

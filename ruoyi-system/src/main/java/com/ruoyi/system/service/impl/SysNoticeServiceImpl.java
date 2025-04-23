@@ -1,6 +1,10 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.ruoyi.system.domain.SysNoticeLite;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.SysNotice;
@@ -9,12 +13,11 @@ import com.ruoyi.system.service.ISysNoticeService;
 
 /**
  * 公告 服务层实现
- * 
- * @author ruoyi
  */
 @Service
-public class SysNoticeServiceImpl implements ISysNoticeService
-{
+@Slf4j
+public class SysNoticeServiceImpl implements ISysNoticeService {
+
     @Autowired
     private SysNoticeMapper noticeMapper;
 
@@ -89,4 +92,45 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     {
         return noticeMapper.deleteNoticeByIds(noticeIds);
     }
+
+    /**
+     * 查询通知（noticeType = '1'）的精简信息列表
+     *
+     * @return 通知精简信息列表
+     */
+    @Override
+    public List<SysNoticeLite> selectAnnouncementLiteList() {
+        try {
+            SysNotice notice = new SysNotice();
+            notice.setNoticeType("1"); // 1 表示通知
+            log.info("查询通知精简信息列表，noticeType: {}", notice.getNoticeType());
+            List<SysNoticeLite> result = noticeMapper.selectNoticeLiteList(notice);
+            for (SysNoticeLite noticeLite : result) {
+                if (noticeLite != null) {
+                    log.info("查询结果: noticeTitle={}, createTime={}, noticeContent={}", noticeLite.getNoticeTitle(), noticeLite.getCreateTime(), noticeLite.getNoticeContent());
+                } else {
+                    log.info("查询结果: null");
+                }
+            }
+            return result;
+        } catch (Exception e) {
+            // 记录日志
+            log.error("查询通知精简信息列表失败", e);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * 查询新闻中心（noticeType = '2'）的精简信息列表
+     *
+     * @return 新闻中心（公告）精简信息列表
+     */
+    @Override
+    public List<SysNoticeLite> selectNewsCenterLiteList() {
+        SysNotice notice = new SysNotice();
+        notice.setNoticeType("2"); // 2 表示新闻中心（公告）
+        return noticeMapper.selectNoticeLiteList(notice);
+    }
+
+
 }

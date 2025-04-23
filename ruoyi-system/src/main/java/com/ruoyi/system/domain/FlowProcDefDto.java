@@ -11,9 +11,6 @@ import java.util.Date;
 
 /**
  * <p>流程定义<p>
- *
- * @author Tony
- * @date 2021-04-03
  */
 @Data
 @AllArgsConstructor

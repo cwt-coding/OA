@@ -9,11 +9,9 @@ import java.util.Set;
 
 /**
  * 登录用户身份权限
- * 
- * @author ruoyi
  */
-public class LoginUser implements UserDetails
-{
+public class LoginUser implements UserDetails {
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -71,18 +69,15 @@ public class LoginUser implements UserDetails
      */
     private SysUser user;
 
-    public LoginUser()
-    {
+    public LoginUser() {
     }
 
-    public LoginUser(SysUser user, Set<String> permissions)
-    {
+    public LoginUser(SysUser user, Set<String> permissions) {
         this.user = user;
         this.permissions = permissions;
     }
 
-    public LoginUser(Long userId, Long deptId, SysUser user, Set<String> permissions)
-    {
+    public LoginUser(Long userId, Long deptId, SysUser user, Set<String> permissions) {
         this.userId = userId;
         this.deptId = deptId;
         this.user = user;

@@ -41,7 +41,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
     </select>
-    
+
+    <resultMap id="SysNoticeLiteResultMap" type="com.ruoyi.system.domain.SysNoticeLite">
+        <result property="noticeTitle" column="notice_title"/>
+        <result property="createTime" column="create_time"/>
+        <result property="noticeType" column="notice_type"/>
+    </resultMap>
+
+    <select id="selectNoticeLiteList" resultType="com.ruoyi.system.domain.SysNoticeLite">
+        SELECT
+        notice_title AS noticeTitle,
+        create_time AS createTime,
+        notice_type AS noticeType,
+        notice_content AS noticeContent
+        FROM sys_notice
+        <where>
+            <if test="noticeType != null and noticeType != ''">
+                AND notice_type = #{noticeType}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
     <insert id="insertNotice" parameterType="SysNotice">
         insert into sys_notice (
 			<if test="noticeTitle != null and noticeTitle != '' ">notice_title, </if>

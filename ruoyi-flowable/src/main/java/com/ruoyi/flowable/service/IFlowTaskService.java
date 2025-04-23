@@ -1,6 +1,7 @@
 package com.ruoyi.flowable.service;
 
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.flowable.domain.vo.FlowQueryLiteVo;
 import com.ruoyi.flowable.domain.vo.FlowQueryVo;
 import com.ruoyi.flowable.domain.vo.FlowTaskVo;
 import org.flowable.task.api.Task;
@@ -8,10 +9,6 @@ import org.flowable.task.api.Task;
 import java.io.InputStream;
 import java.util.List;
 
-/**
- * @author Tony
- * @date 2021-04-03 14:42
- */
 public interface IFlowTaskService {
 
     /**
@@ -131,7 +128,6 @@ public interface IFlowTaskService {
      */
     AjaxResult todoList(FlowQueryVo queryVo);
 
-
     /**
      * 已办任务列表
      *
@@ -215,4 +211,18 @@ public interface IFlowTaskService {
      * @return
      */
     AjaxResult flowTaskInfo(String procInsId, String elementId);
+
+    /**
+     * 获取待办流程数量
+     * @param queryVo 请求参数
+     * @return
+     */
+    AjaxResult todoProcessCount(FlowQueryVo queryVo);
+
+    /**
+     * 获取待办列表首页展示
+     * @param queryLiteVo
+     * @return
+     */
+    AjaxResult todoListLite(FlowQueryLiteVo queryLiteVo);
 }

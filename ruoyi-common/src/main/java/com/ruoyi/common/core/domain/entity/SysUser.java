@@ -14,11 +14,9 @@ import com.ruoyi.common.xss.Xss;
 
 /**
  * 用户对象 sys_user
- * 
- * @author ruoyi
  */
-public class SysUser extends BaseEntity
-{
+public class SysUser extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 用户ID */
@@ -89,8 +87,7 @@ public class SysUser extends BaseEntity
     /** 角色ID */
     private Long roleId;
 
-    public SysUser()
-    {
+    public SysUser() {
 
     }
 

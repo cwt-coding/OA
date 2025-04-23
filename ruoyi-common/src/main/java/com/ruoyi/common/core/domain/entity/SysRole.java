@@ -12,11 +12,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 角色表 sys_role
- * 
- * @author ruoyi
  */
-public class SysRole extends BaseEntity
-{
+public class SysRole extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 角色ID */
@@ -64,8 +62,7 @@ public class SysRole extends BaseEntity
     /** 角色菜单权限 */
     private Set<String> permissions;
 
-    public SysRole()
-    {
+    public SysRole() {
 
     }
 

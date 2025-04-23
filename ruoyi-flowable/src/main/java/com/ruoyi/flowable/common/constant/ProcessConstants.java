@@ -2,9 +2,6 @@ package com.ruoyi.flowable.common.constant;
 
 /**
  * 流程常量信息
- *
- * @author Tony
- * @date 2021/4/17 22:46
  */
 public class ProcessConstants {
 
@@ -75,6 +72,5 @@ public class ProcessConstants {
      * 流程跳过
      */
     public static final String FLOWABLE_SKIP_EXPRESSION_ENABLED = "_FLOWABLE_SKIP_EXPRESSION_ENABLED";
-
 
 }

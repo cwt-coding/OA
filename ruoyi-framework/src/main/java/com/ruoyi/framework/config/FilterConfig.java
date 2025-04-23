@@ -14,12 +14,10 @@ import com.ruoyi.common.utils.StringUtils;
 
 /**
  * Filter配置
- *
- * @author ruoyi
  */
 @Configuration
-public class FilterConfig
-{
+public class FilterConfig {
+
     @Value("${xss.excludes}")
     private String excludes;
 
@@ -29,8 +27,7 @@ public class FilterConfig
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Bean
     @ConditionalOnProperty(value = "xss.enabled", havingValue = "true")
-    public FilterRegistrationBean xssFilterRegistration()
-    {
+    public FilterRegistrationBean xssFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
         registration.setFilter(new XssFilter());
@@ -45,8 +42,7 @@ public class FilterConfig
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Bean
-    public FilterRegistrationBean someFilterRegistration()
-    {
+    public FilterRegistrationBean someFilterRegistration() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(new RepeatableFilter());
         registration.addUrlPatterns("/*");

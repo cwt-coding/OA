@@ -5,10 +5,6 @@ import com.ruoyi.flowable.domain.vo.FlowTaskVo;
 import org.flowable.engine.history.HistoricProcessInstance;
 import java.util.Map;
 
-/**
- * @author Tony
- * @date 2021-04-03 14:40
- */
 public interface IFlowInstanceService {
 
     /**

@@ -13,12 +13,10 @@ import com.ruoyi.system.service.ISysPostService;
 
 /**
  * 岗位信息 服务层处理
- * 
- * @author ruoyi
  */
 @Service
-public class SysPostServiceImpl implements ISysPostService
-{
+public class SysPostServiceImpl implements ISysPostService {
+
     @Autowired
     private SysPostMapper postMapper;
 
@@ -79,12 +77,10 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public boolean checkPostNameUnique(SysPost post)
-    {
+    public boolean checkPostNameUnique(SysPost post) {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
         SysPost info = postMapper.checkPostNameUnique(post.getPostName());
-        if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue())
-        {
+        if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue()) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -97,12 +93,10 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public boolean checkPostCodeUnique(SysPost post)
-    {
+    public boolean checkPostCodeUnique(SysPost post) {
         Long postId = StringUtils.isNull(post.getPostId()) ? -1L : post.getPostId();
         SysPost info = postMapper.checkPostCodeUnique(post.getPostCode());
-        if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue())
-        {
+        if (StringUtils.isNotNull(info) && info.getPostId().longValue() != postId.longValue()) {
             return UserConstants.NOT_UNIQUE;
         }
         return UserConstants.UNIQUE;
@@ -139,13 +133,10 @@ public class SysPostServiceImpl implements ISysPostService
      * @return 结果
      */
     @Override
-    public int deletePostByIds(Long[] postIds)
-    {
-        for (Long postId : postIds)
-        {
+    public int deletePostByIds(Long[] postIds) {
+        for (Long postId : postIds) {
             SysPost post = selectPostById(postId);
-            if (countUserPostById(postId) > 0)
-            {
+            if (countUserPostById(postId) > 0) {
                 throw new ServiceException(String.format("%1$s已分配,不能删除", post.getPostName()));
             }
         }

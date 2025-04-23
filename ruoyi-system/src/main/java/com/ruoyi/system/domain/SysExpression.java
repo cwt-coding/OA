@@ -7,12 +7,9 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 流程达式对象 sys_expression
- *
- * @author ruoyi
- * @date 2022-12-12
  */
-public class SysExpression extends BaseEntity
-{
+public class SysExpression extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 表单主键 */

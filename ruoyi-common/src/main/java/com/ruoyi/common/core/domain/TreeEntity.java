@@ -5,11 +5,9 @@ import java.util.List;
 
 /**
  * Tree基类
- * 
- * @author ruoyi
  */
-public class TreeEntity extends BaseEntity
-{
+public class TreeEntity extends BaseEntity {
+
     private static final long serialVersionUID = 1L;
 
     /** 父菜单名称 */

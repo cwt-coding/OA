@@ -12,9 +12,6 @@ import org.springframework.stereotype.Component;
  * assignment（指派）：在任务被分配给某个办理人之后触发
  * complete（完成）：在配置了监听器的上一个任务完成时触发
  * delete（删除）：在任务即将被删除前触发。请注意任务由completeTask正常完成时也会触发
- *
- * @author Tony
- * @date 2021/4/20
  */
 @Slf4j
 @Component

@@ -5,11 +5,9 @@ import io.jsonwebtoken.Claims;
 
 /**
  * 通用常量信息
- * 
- * @author ruoyi
  */
-public class Constants
-{
+public class Constants {
+
     /**
      * UTF-8 字符集
      */

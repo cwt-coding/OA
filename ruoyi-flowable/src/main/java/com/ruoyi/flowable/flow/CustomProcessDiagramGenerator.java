@@ -9,10 +9,6 @@ import org.flowable.image.impl.DefaultProcessDiagramGenerator;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @author Tony
- * @date 2021/4/5 0:31
- */
 public class CustomProcessDiagramGenerator extends DefaultProcessDiagramGenerator {
     @Override
     protected DefaultProcessDiagramCanvas generateProcessDiagram(BpmnModel bpmnModel, String imageType, List<String> highLightedActivities, List<String> highLightedFlows, String activityFontName, String labelFontName, String annotationFontName, ClassLoader customClassLoader, double scaleFactor, boolean drawSequenceFlowNameWithNoLabelDI) {

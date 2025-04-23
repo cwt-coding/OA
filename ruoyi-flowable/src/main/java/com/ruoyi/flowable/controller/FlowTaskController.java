@@ -1,10 +1,13 @@
 package com.ruoyi.flowable.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.flowable.domain.dto.FlowTaskDto;
+import com.ruoyi.flowable.domain.dto.FlowTaskLiteDto;
+import com.ruoyi.flowable.domain.vo.FlowQueryLiteVo;
 import com.ruoyi.flowable.domain.vo.FlowQueryVo;
 import com.ruoyi.flowable.domain.vo.FlowTaskVo;
 import com.ruoyi.flowable.service.IFlowTaskService;
@@ -24,9 +27,6 @@ import java.io.OutputStream;
 
 /**
  * <p>工作流任务管理<p>
- *
- * @author Tony
- * @date 2021-04-03
  */
 @Slf4j
 @Api(tags = "工作流流程任务管理")
@@ -36,6 +36,43 @@ public class FlowTaskController extends BaseController {
 
     @Autowired
     private IFlowTaskService flowTaskService;
+
+    @ApiOperation(value = "获取待办流程数量")
+    @GetMapping("/todoCount")
+    public AjaxResult todoProcessCount(FlowQueryVo queryVo) {
+        // 进行 pageNum 空值检查
+        if (queryVo.getPageNum() == null) {
+            queryVo.setPageNum(1); // 设置默认值
+        }
+        // 进行 pageSize 空值检查
+        if (queryVo.getPageSize() == null) {
+            queryVo.setPageSize(10); // 设置默认值
+        }
+        return flowTaskService.todoProcessCount(queryVo);
+    }
+
+    @ApiOperation(value = "统计我的流程数量")
+    @GetMapping("/myProcessCount")
+    public AjaxResult myProcessCount(FlowQueryVo queryVo) {
+        // 进行 pageNum 空值检查
+        if (queryVo.getPageNum() == null) {
+            queryVo.setPageNum(1); // 设置默认值
+        }
+        // 进行 pageSize 空值检查
+        if (queryVo.getPageSize() == null) {
+            queryVo.setPageSize(10); // 设置默认值
+        }
+        // 调用服务层方法获取我的流程列表
+        AjaxResult result = flowTaskService.myProcess(queryVo);
+        // 从结果中获取列表数据
+        Object data = result.get("data");
+        if (data instanceof Page<?>) {
+            Page<?> page = (Page<?>) data;
+            // 返回列表的总记录数
+            return AjaxResult.success(page.getTotal());
+        }
+        return AjaxResult.error("获取我的流程数量失败");
+    }
 
     @ApiOperation(value = "我发起的流程", response = FlowTaskDto.class)
     @GetMapping(value = "/myProcess")
@@ -61,6 +98,12 @@ public class FlowTaskController extends BaseController {
     @GetMapping(value = "/todoList")
     public AjaxResult todoList(FlowQueryVo queryVo) {
         return flowTaskService.todoList(queryVo);
+    }
+
+    @ApiOperation(value = "获取待办列表首页展示", response = FlowTaskLiteDto.class)
+    @GetMapping(value = "/todoListLite")
+    public AjaxResult todoListLite(FlowQueryLiteVo queryLiteVo) {
+        return flowTaskService.todoListLite(queryLiteVo);
     }
 
     @ApiOperation(value = "获取已办任务", response = FlowTaskDto.class)

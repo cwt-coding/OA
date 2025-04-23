@@ -10,11 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Entity基类
- * 
- * @author ruoyi
  */
-public class BaseEntity implements Serializable
-{
+public class BaseEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     /** 搜索值 */
@@ -102,10 +100,8 @@ public class BaseEntity implements Serializable
         this.remark = remark;
     }
 
-    public Map<String, Object> getParams()
-    {
-        if (params == null)
-        {
+    public Map<String, Object> getParams() {
+        if (params == null) {
             params = new HashMap<>();
         }
         return params;
