@@ -35,4 +35,10 @@ public interface ISysLogininforService {
      * 清空系统登录日志
      */
     public void cleanLogininfor();
+
+    /**
+     * 清理超过三十天的登录信息
+     * @return
+     */
+    int cleanExpiredLoginInfo();
 }

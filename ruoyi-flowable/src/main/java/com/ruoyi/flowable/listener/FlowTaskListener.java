@@ -20,10 +20,69 @@ public class FlowTaskListener implements TaskListener{
     @Override
     public void notify(DelegateTask delegateTask) {
 
-        log.info("任务监听器:{}", delegateTask);
-        // TODO  获取事件类型 delegateTask.getEventName(),可以通过监听器给任务执行人发送相应的通知消息
+        String eventName = delegateTask.getEventName();
+        log.info("任务监听器触发: 事件类型={}, 任务ID={}, 任务名称={}",
+                eventName, delegateTask.getId(), delegateTask.getName());
 
+        try {
+            // 根据事件类型执行不同的处理逻辑
+            switch (eventName) {
+                case TaskListener.EVENTNAME_CREATE:
+                    handleTaskCreate(delegateTask);
+                    break;
+                case TaskListener.EVENTNAME_ASSIGNMENT:
+                    handleTaskAssignment(delegateTask);
+                    break;
+                case TaskListener.EVENTNAME_COMPLETE:
+                    handleTaskComplete(delegateTask);
+                    break;
+                case TaskListener.EVENTNAME_DELETE:
+                    handleTaskDelete(delegateTask);
+                    break;
+                default:
+                    log.warn("未知的任务事件类型: {}", eventName);
+            }
+        } catch (Exception e) {
+            log.error("处理任务事件时发生错误: {}", e.getMessage(), e);
+        }
+    }
 
+    private void handleTaskCreate(DelegateTask delegateTask) {
+        log.info("任务创建事件: 任务ID={}, 办理人={}",
+                delegateTask.getId(), delegateTask.getAssignee());
+        // 可以添加任务创建后的处理逻辑，如发送创建通知
+        sendNotification(delegateTask, "任务已创建");
+    }
+
+    private void handleTaskAssignment(DelegateTask delegateTask) {
+        log.info("任务指派事件: 任务ID={}, 新办理人={}",
+                delegateTask.getId(), delegateTask.getAssignee());
+        // 可以添加任务指派后的处理逻辑，如发送指派通知
+        sendNotification(delegateTask, "任务已指派给您");
+    }
+
+    private void handleTaskComplete(DelegateTask delegateTask) {
+        log.info("任务完成事件: 任务ID={}, 办理人={}",
+                delegateTask.getId(), delegateTask.getAssignee());
+        // 可以添加任务完成后的处理逻辑，如发送完成通知
+        sendNotification(delegateTask, "任务已完成");
+    }
+
+    private void handleTaskDelete(DelegateTask delegateTask) {
+        log.info("任务删除事件: 任务ID={}, 办理人={}",
+                delegateTask.getId(), delegateTask.getAssignee());
+        // 可以添加任务删除后的处理逻辑
+    }
+
+    private void sendNotification(DelegateTask delegateTask, String message) {
+        // 实际项目中可以调用消息服务发送通知
+        // 这里仅打印日志作为示例
+        String assignee = delegateTask.getAssignee();
+        if (assignee != null) {
+            log.info("发送通知给 {}: {}", assignee, message);
+            // 示例：调用消息服务
+            // messageService.sendTaskNotification(assignee, delegateTask.getId(), message);
+        }
     }
 
 }

@@ -38,6 +38,7 @@ import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.history.HistoricProcessInstanceQuery;
 import org.flowable.engine.repository.ProcessDefinition;
+import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Comment;
@@ -50,6 +51,7 @@ import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.flowable.engine.impl.cmd.AddMultiInstanceExecutionCmd;
 import org.flowable.engine.impl.cmd.DeleteMultiInstanceExecutionCmd;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -108,7 +110,7 @@ public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTask
      *
      * @param flowTaskVo
      */
-    @Override
+    /*@Override
     public void taskReject(FlowTaskVo flowTaskVo) {
         if (taskService.createTaskQuery().taskId(flowTaskVo.getTaskId()).singleResult().isSuspended()) {
             throw new CustomException("任务处于挂起状态!");
@@ -225,7 +227,32 @@ public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTask
             throw new CustomException("无法取消或开始活动");
         }
 
+    }*/
+    @Override
+    public void taskReject(FlowTaskVo flowTaskVo) {
+        if (taskService.createTaskQuery().taskId(flowTaskVo.getTaskId()).singleResult().isSuspended()) {
+            throw new CustomException("任务处于挂起状态!");
+        }
+        // 当前任务 task
+        Task task = taskService.createTaskQuery().taskId(flowTaskVo.getTaskId()).singleResult();
+        // 获取流程实例
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+                .processInstanceId(task.getProcessInstanceId())
+                .singleResult();
+        if (processInstance == null) {
+            throw new CustomException("流程实例不存在");
+        }
+
+        // 设置驳回意见
+        taskService.addComment(task.getId(), task.getProcessInstanceId(), "REJECT", flowTaskVo.getComment());
+
+        // 结束流程实例
+        runtimeService.deleteProcessInstance(processInstance.getId(), "流程被驳回: " + flowTaskVo.getComment());
+
+        // 可以添加发送通知给申请人的逻辑
+
     }
+
 
     /**
      * 退回任务
@@ -1229,11 +1256,11 @@ public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTask
             // 返回列表的总记录数
             return AjaxResult.success(page.getTotal());
         }
-        return AjaxResult.error("获取代办流程数量失败");
+        return AjaxResult.error("获取待办流程数量失败");
     }
 
     @Override
-    public AjaxResult todoListLite(FlowQueryLiteVo queryLiteVo) {
+    /*public AjaxResult todoListLite(FlowQueryLiteVo queryLiteVo) {
         List<FlowTaskDto> todoTaskList = new ArrayList<>();
         Long userId = getCurrentUserId();
         if (userId == null) {
@@ -1324,7 +1351,189 @@ public class FlowTaskServiceImpl extends FlowServiceFactory implements IFlowTask
             }
         }
         return null;
+    }*/
+    /*public AjaxResult todoListLite(FlowQueryLiteVo queryLiteVo) {
+        Page<FlowTaskDto> page = new Page<>();
+        SysUser sysUser = SecurityUtils.getLoginUser().getUser();
+        TaskQuery taskQuery = taskService.createTaskQuery()
+                .active()
+                .includeProcessVariables()
+                .taskCandidateGroupIn(sysUser.getRoles().stream().map(role -> role.getRoleId().toString()).collect(Collectors.toList()))
+                .taskCandidateOrAssigned(sysUser.getUserId().toString())
+                .orderByTaskCreateTime().desc();
+
+        // 打印查询条件
+        log.info("查询条件：用户ID={}, 角色ID={}", sysUser.getUserId(), sysUser.getRoles().stream().map(role -> role.getRoleId().toString()).collect(Collectors.toList()));
+
+        // 验证并转换 pageSize 和 pageNum
+        int pageSize = 4; // 默认值
+        int pageNum = 1;   // 默认值
+        if (queryLiteVo.getPageSize() != null) {
+            try {
+                pageSize = Integer.parseInt(queryLiteVo.getPageSize().toString());
+                if (pageSize <= 0) {
+                    pageSize = 4; // 如果小于等于 0，使用默认值
+                    log.info("pageSize 小于等于 0，使用默认值: {}", pageSize);
+                } else {
+                    log.info("使用传入的 pageSize: {}", pageSize);
+                }
+            } catch (NumberFormatException e) {
+                log.error("Invalid pageSize: {}", queryLiteVo.getPageSize(), e);
+            }
+        }
+        if (queryLiteVo.getPageNum() != null) {
+            try {
+                pageNum = Integer.parseInt(queryLiteVo.getPageNum().toString());
+                if (pageNum <= 0) {
+                    pageNum = 1; // 如果小于等于 0，使用默认值
+                    log.info("pageNum 小于等于 0，使用默认值: {}", pageNum);
+                } else {
+                    log.info("使用传入的 pageNum: {}", pageNum);
+                }
+            } catch (NumberFormatException e) {
+                log.error("Invalid pageNum: {}", queryLiteVo.getPageNum(), e);
+            }
+        }
+
+        long total = taskQuery.count();
+        log.info("查询到的总记录数：{}", total);
+
+        page.setTotal(total);
+        List<Task> taskList = taskQuery.listPage((pageNum - 1) * pageSize, pageSize);
+        log.info("当前页查询到的记录数：{}", taskList.size());
+
+        List<FlowTaskDto> flowList = new ArrayList<>();
+        for (Task task : taskList) {
+            FlowTaskDto flowTask = new FlowTaskDto();
+            // 当前流程信息
+            flowTask.setTaskId(task.getId());
+            flowTask.setTaskName(task.getName());
+
+            // 流程定义信息
+            ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+                    .processDefinitionId(task.getProcessDefinitionId())
+                    .singleResult();
+            if (pd != null) {
+                flowTask.setProcDefName(pd.getName());
+                log.info("为任务 ID {} 设置流程名称: {}", task.getId(), pd.getName());
+            } else {
+                flowTask.setProcDefName("未知流程"); // 设置默认值
+                log.info("未找到任务 ID {} 的流程定义，设置默认流程名称: 未知流程", task.getId());
+            }
+
+            // 接收时间
+            flowTask.setCreateTime(task.getCreateTime());
+
+            // 流程发起人信息
+            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
+                    .processInstanceId(task.getProcessInstanceId())
+                    .singleResult();
+            SysUser startUser = sysUserService.selectUserById(Long.parseLong(historicProcessInstance.getStartUserId()));
+            flowTask.setStartUserName(startUser.getNickName());
+            flowTask.setStartDeptName(Objects.nonNull(startUser.getDept()) ? startUser.getDept().getDeptName() : "");
+
+            flowList.add(flowTask);
+        }
+
+        page.setRecords(flowList);
+        // 确保返回的数据结构与前端期望的一致
+        return AjaxResult.success(page);
+    }*/
+    public AjaxResult todoListLite(FlowQueryLiteVo queryLiteVo) {
+        SysUser sysUser = SecurityUtils.getLoginUser().getUser();
+        if (sysUser == null) {
+            log.info("未获取到当前用户信息，返回空数据");
+            return AjaxResult.success(new HashMap<>());
+        }
+
+        TaskQuery taskQuery = taskService.createTaskQuery()
+                .active()
+                .includeProcessVariables()
+                .taskCandidateGroupIn(sysUser.getRoles().stream().map(role -> role.getRoleId().toString()).collect(Collectors.toList()))
+                .taskCandidateOrAssigned(sysUser.getUserId().toString())
+                .orderByTaskCreateTime().desc();
+
+        // 验证并转换 pageSize 和 pageNum
+        int pageSize = 4;
+        int pageNum = 1;
+        if (queryLiteVo.getPageSize() != null) {
+            try {
+                pageSize = Integer.parseInt(queryLiteVo.getPageSize().toString());
+                if (pageSize <= 0) {
+                    pageSize = 4;
+                    log.info("pageSize 小于等于 0，使用默认值: {}", pageSize);
+                } else {
+                    log.info("使用传入的 pageSize: {}", pageSize);
+                }
+            } catch (NumberFormatException e) {
+                log.error("Invalid pageSize: {}", queryLiteVo.getPageSize(), e);
+            }
+        }
+        if (queryLiteVo.getPageNum() != null) {
+            try {
+                pageNum = Integer.parseInt(queryLiteVo.getPageNum().toString());
+                if (pageNum <= 0) {
+                    pageNum = 1;
+                    log.info("pageNum 小于等于 0，使用默认值: {}", pageNum);
+                } else {
+                    log.info("使用传入的 pageNum: {}", pageNum);
+                }
+            } catch (NumberFormatException e) {
+                log.error("Invalid pageNum: {}", queryLiteVo.getPageNum(), e);
+            }
+        }
+
+        long total = taskQuery.count();
+        log.info("查询到的总记录数：{}", total);
+
+        List<Task> taskList = taskQuery.listPage((pageNum - 1) * pageSize, pageSize);
+        log.info("当前页查询到的记录数：{}", taskList.size());
+
+        List<FlowTaskDto> flowList = new ArrayList<>();
+        for (Task task : taskList) {
+            FlowTaskDto flowTask = new FlowTaskDto();
+            // 当前流程信息
+            flowTask.setTaskId(task.getId());
+            flowTask.setTaskName(task.getName());
+
+            // 流程定义信息
+            ProcessDefinition pd = repositoryService.createProcessDefinitionQuery()
+                    .processDefinitionId(task.getProcessDefinitionId())
+                    .singleResult();
+            if (pd != null) {
+                flowTask.setProcDefName(pd.getName());
+                log.info("为任务 ID {} 设置流程名称: {}", task.getId(), pd.getName());
+            } else {
+            flowTask.setProcDefName("未知流程");
+            log.info("未找到任务 ID {} 的流程定义，设置默认流程名称: 未知流程", task.getId());
+            }
+
+            // 接收时间
+            flowTask.setCreateTime(task.getCreateTime());
+
+            // 流程发起人信息
+            HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
+                    .processInstanceId(task.getProcessInstanceId())
+                    .singleResult();
+            if (historicProcessInstance != null && historicProcessInstance.getStartUserId() != null) {
+                SysUser startUser = sysUserService.selectUserById(Long.parseLong(historicProcessInstance.getStartUserId()));
+                if (startUser != null) {
+                    flowTask.setStartUserName(startUser.getNickName());
+                    flowTask.setStartDeptName(Objects.nonNull(startUser.getDept()) ? startUser.getDept().getDeptName() : "");
+                }
+            }
+
+            flowList.add(flowTask);
+        }
+
+        // 构建前端期望格式
+        Map<String, Object> result = new HashMap<>();
+        result.put("records", flowList);
+        result.put("total", total);
+
+        return AjaxResult.success(result);
     }
+
 
     /**
      * 将Object类型的数据转化成Map<String,Object>

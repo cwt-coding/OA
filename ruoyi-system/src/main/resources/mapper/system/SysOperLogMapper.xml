@@ -74,8 +74,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			#{operId}
         </foreach> 
  	</delete>
- 	
- 	<select id="selectOperLogById" parameterType="Long" resultMap="SysOperLogResult">
+
+    <delete id="deleteExpiredOperLog">
+		<![CDATA[
+		DELETE FROM sys_oper_log WHERE create_time < #{expiredDate}
+		]]>
+	</delete>
+
+    <select id="selectOperLogById" parameterType="Long" resultMap="SysOperLogResult">
 		<include refid="selectOperLogVo"/>
 		where oper_id = #{operId}
 	</select>

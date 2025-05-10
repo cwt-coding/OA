@@ -71,8 +71,7 @@ public class SysUserServiceImpl implements ISysUserService {
      */
     @Override
     @DataScope(deptAlias = "d", userAlias = "u")
-    public List<SysUser> selectUserList(SysUser user)
-    {
+    public List<SysUser> selectUserList(SysUser user) {
         return userMapper.selectUserList(user);
     }
 
@@ -210,11 +209,20 @@ public class SysUserServiceImpl implements ISysUserService {
      * @param user 用户信息
      */
     @Override
+    public void checkUserAllowed(SysUser user)
+    {
+        // 获取当前登录用户的 ID
+        Long currentUserId = SecurityUtils.getUserId();
+        if (StringUtils.isNotNull(user.getUserId()) && user.isAdmin() && !user.getUserId().equals(currentUserId)) {
+            throw new ServiceException("不允许操作其他超级管理员用户");
+        }
+    }
+   /* @Override
     public void checkUserAllowed(SysUser user) {
         if (StringUtils.isNotNull(user.getUserId()) && user.isAdmin()) {
             throw new ServiceException("不允许操作超级管理员用户");
         }
-    }
+    }*/
 
     /**
      * 校验用户是否有数据权限

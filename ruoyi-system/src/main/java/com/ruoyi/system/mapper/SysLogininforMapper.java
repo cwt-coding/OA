@@ -1,5 +1,6 @@
 package com.ruoyi.system.mapper;
 
+import java.util.Date;
 import java.util.List;
 import com.ruoyi.system.domain.SysLogininfor;
 
@@ -37,4 +38,6 @@ public interface SysLogininforMapper {
      * @return 结果
      */
     public int cleanLogininfor();
+
+    int deleteExpiredLoginInfo(Date expiredDate);
 }

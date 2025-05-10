@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,4 +60,18 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
     {
         logininforMapper.cleanLogininfor();
     }
+
+    /**
+     * 清理超过三十天的登录信息
+     *
+     * @return
+     */
+    @Override
+    public int cleanExpiredLoginInfo() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -30);
+        Date expiredDate = calendar.getTime();
+        return logininforMapper.deleteExpiredLoginInfo(expiredDate);
+    }
+
 }

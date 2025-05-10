@@ -43,4 +43,10 @@ public interface ISysOperLogService {
      * 清空操作日志
      */
     public void cleanOperLog();
+
+    /**
+     * 清理超过三十天的操作日志记录
+     * @return
+     */
+    int cleanExpiredOperLog();
 }

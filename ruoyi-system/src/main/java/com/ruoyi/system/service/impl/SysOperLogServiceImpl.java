@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,5 +72,21 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     public void cleanOperLog()
     {
         operLogMapper.cleanOperLog();
+    }
+
+    /**
+     * 清理超过三十天的操作日志记录
+     *
+     * @return
+     */
+    @Override
+    public int cleanExpiredOperLog() {
+        // 计算30天前的日期
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -30);
+        Date expiredDate = calendar.getTime();
+
+        // 调用Mapper方法删除过期记录
+        return operLogMapper.deleteExpiredOperLog(expiredDate);
     }
 }
